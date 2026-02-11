@@ -1,0 +1,69 @@
+# =========================
+# Project-wide configuration
+# =========================
+
+project:
+  name: quant-alt-data-alpha
+  timezone: UTC
+  start_date: "2020-01-01"
+  end_date: "2025-12-31"
+
+# -------------------------
+# Universe configuration
+# -------------------------
+universe:
+  max_stocks: 30
+  liquidity_filter:
+    min_avg_daily_volume: 5_000_000
+    min_market_cap_usd: 10_000_000_000
+
+# -------------------------
+# Alternative data sources
+# -------------------------
+data_sources:
+  job_postings:
+    enabled: true
+    scrape_frequency: weekly
+    lookback_days: 90
+
+  reddit:
+    enabled: true
+    subreddits:
+      - stocks
+      - investing
+      - wallstreetbets
+    lookback_days: 90
+
+# -------------------------
+# Feature engineering
+# -------------------------
+features:
+  job_postings:
+    windows: [7, 30]
+  reddit:
+    windows: [7, 30, 90]
+
+# -------------------------
+# Labels
+# -------------------------
+labels:
+  horizon_days: 5
+  type: classification  # classification | regression
+
+# -------------------------
+# Backtesting
+# -------------------------
+backtest:
+  method: walk_forward
+  train_window_days: 720
+  test_window_days: 90
+  transaction_cost_bps: 15
+
+# -------------------------
+# Storage paths
+# -------------------------
+paths:
+  raw_data: data/raw
+  processed_data: data/processed
+  features: data/features
+  models: models/artifacts
